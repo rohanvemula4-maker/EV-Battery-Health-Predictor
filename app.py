@@ -9,18 +9,13 @@ st.set_page_config(
     layout="wide"
 )
 
-# Debug Startup Message
-st.write("🚀 App Started")
-
 # Load Model
 try:
-    with open("models/battery_model.pkl", "rb") as file:
+    with open("battery_health_model.pkl", "rb") as file:
         model = pickle.load(file)
 
-    st.success("✅ Model Loaded Successfully")
-
 except Exception as e:
-    st.error(f"❌ Model Loading Error: {e}")
+    st.error(f"Model Loading Error: {e}")
     st.stop()
 
 # Title
@@ -39,7 +34,7 @@ with col1:
 with col2:
     st.metric("Dataset Size", "10,000 Records")
 
-# Features Section
+# Features
 st.markdown("""
 ### Project Features
 
@@ -54,41 +49,63 @@ st.markdown("""
 ✅ EV Battery Analytics
 """)
 
-# Sidebar Inputs
+# Sidebar
 st.sidebar.header("Battery Parameters")
 
-charge_cycles = st.sidebar.number_input(
-    "Charge Cycles",
+battery_capacity = st.sidebar.number_input(
+    "Battery Capacity (kWh)",
+    min_value=0.0,
+    value=75.0
+)
+
+vehicle_age = st.sidebar.number_input(
+    "Vehicle Age (Months)",
+    min_value=0,
+    value=24
+)
+
+charging_cycles = st.sidebar.number_input(
+    "Charging Cycles",
     min_value=0,
     value=500
 )
 
-voltage = st.sidebar.number_input(
-    "Voltage (V)",
-    min_value=0.0,
-    value=400.0
-)
-
 temperature = st.sidebar.number_input(
-    "Temperature (°C)",
+    "Average Temperature (°C)",
     min_value=-20.0,
     value=30.0
 )
 
-capacity = st.sidebar.number_input(
-    "Capacity (kWh)",
+fast_charge_ratio = st.sidebar.number_input(
+    "Fast Charge Ratio",
     min_value=0.0,
-    value=75.0
+    max_value=1.0,
+    value=0.5
+)
+
+discharge_rate = st.sidebar.number_input(
+    "Average Discharge Rate",
+    min_value=0.0,
+    value=1.0
+)
+
+internal_resistance = st.sidebar.number_input(
+    "Internal Resistance (Ohm)",
+    min_value=0.0,
+    value=0.03
 )
 
 # Prediction
 if st.button("🔋 Predict Battery Health"):
 
     input_data = pd.DataFrame({
-        "Charge_Cycles": [charge_cycles],
-        "Voltage": [voltage],
-        "Temperature": [temperature],
-        "Capacity": [capacity]
+        "Battery_Capacity_kWh": [battery_capacity],
+        "Vehicle_Age_Months": [vehicle_age],
+        "Total_Charging_Cycles": [charging_cycles],
+        "Avg_Temperature_C": [temperature],
+        "Fast_Charge_Ratio": [fast_charge_ratio],
+        "Avg_Discharge_Rate_C": [discharge_rate],
+        "Internal_Resistance_Ohm": [internal_resistance]
     })
 
     prediction = model.predict(input_data)[0]
@@ -97,7 +114,7 @@ if st.button("🔋 Predict Battery Health"):
 
     st.metric(
         "Battery Health (SoH)",
-        f"{prediction:.1f}%"
+        f"{prediction:.2f}%"
     )
 
     st.progress(prediction / 100)
@@ -122,6 +139,7 @@ try:
     col1, col2 = st.columns(2)
 
     with col1:
+
         st.image(
             "images/soh_vs_cycles.png",
             caption="Battery Health vs Charging Cycles",
@@ -135,6 +153,7 @@ try:
         )
 
     with col2:
+
         st.image(
             "images/resistance_vs_soh.png",
             caption="Resistance vs Battery Health",
