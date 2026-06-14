@@ -11,7 +11,7 @@ st.set_page_config(
 
 # Load Model
 try:
-    with open("battery_health_model.pkl", "rb") as file:
+    with open("models/battery_model.pkl", "rb") as file:
         model = pickle.load(file)
 
 except Exception as e:
@@ -49,63 +49,41 @@ st.markdown("""
 ✅ EV Battery Analytics
 """)
 
-# Sidebar
+# Sidebar Inputs
 st.sidebar.header("Battery Parameters")
 
-battery_capacity = st.sidebar.number_input(
-    "Battery Capacity (kWh)",
-    min_value=0.0,
-    value=75.0
-)
-
-vehicle_age = st.sidebar.number_input(
-    "Vehicle Age (Months)",
-    min_value=0,
-    value=24
-)
-
-charging_cycles = st.sidebar.number_input(
-    "Charging Cycles",
+charge_cycles = st.sidebar.number_input(
+    "Charge Cycles",
     min_value=0,
     value=500
 )
 
+voltage = st.sidebar.number_input(
+    "Voltage (V)",
+    min_value=0.0,
+    value=400.0
+)
+
 temperature = st.sidebar.number_input(
-    "Average Temperature (°C)",
+    "Temperature (°C)",
     min_value=-20.0,
     value=30.0
 )
 
-fast_charge_ratio = st.sidebar.number_input(
-    "Fast Charge Ratio",
+capacity = st.sidebar.number_input(
+    "Capacity (kWh)",
     min_value=0.0,
-    max_value=1.0,
-    value=0.5
-)
-
-discharge_rate = st.sidebar.number_input(
-    "Average Discharge Rate",
-    min_value=0.0,
-    value=1.0
-)
-
-internal_resistance = st.sidebar.number_input(
-    "Internal Resistance (Ohm)",
-    min_value=0.0,
-    value=0.03
+    value=75.0
 )
 
 # Prediction
 if st.button("🔋 Predict Battery Health"):
 
     input_data = pd.DataFrame({
-        "Battery_Capacity_kWh": [battery_capacity],
-        "Vehicle_Age_Months": [vehicle_age],
-        "Total_Charging_Cycles": [charging_cycles],
-        "Avg_Temperature_C": [temperature],
-        "Fast_Charge_Ratio": [fast_charge_ratio],
-        "Avg_Discharge_Rate_C": [discharge_rate],
-        "Internal_Resistance_Ohm": [internal_resistance]
+        "Charge_Cycles": [charge_cycles],
+        "Voltage": [voltage],
+        "Temperature": [temperature],
+        "Capacity": [capacity]
     })
 
     prediction = model.predict(input_data)[0]
