@@ -10,12 +10,12 @@ The application provides real-time battery health prediction through an interact
 
 ## Features
 
-- Battery Health Prediction
-- Interactive Streamlit Dashboard
-- Real-Time Analysis
-- Data Visualization
-- Machine Learning Based Prediction
-- User-Friendly Interface
+* Battery Health Prediction
+* Interactive Streamlit Dashboard
+* Real-Time Analysis
+* Data Visualization
+* Machine Learning Based Prediction
+* User-Friendly Interface
 
 ---
 
@@ -25,14 +25,14 @@ Dataset Size: 10,000 Records
 
 ### Input Features
 
-- Charge Cycles
-- Voltage
-- Temperature
-- Capacity
+* Charge Cycles
+* Voltage
+* Temperature
+* Capacity
 
 ### Target
 
-- Battery State of Health (SoH)
+* Battery State of Health (SoH)
 
 ---
 
@@ -40,12 +40,12 @@ Dataset Size: 10,000 Records
 
 Models Evaluated:
 
-- Linear Regression
-- Random Forest Regressor
+* Linear Regression
+* Random Forest Regressor
 
 Selected Model:
 
-- Random Forest Regressor
+* Random Forest Regressor
 
 Accuracy Achieved:
 
@@ -55,12 +55,12 @@ Accuracy Achieved:
 
 ## Technologies Used
 
-- Python
-- Pandas
-- Scikit-Learn
-- Streamlit
-- Matplotlib
-- Pickle
+* Python
+* Pandas
+* Scikit-Learn
+* Streamlit
+* Matplotlib
+* Pickle
 
 ---
 
@@ -106,11 +106,11 @@ streamlit run app.py
 
 ## Future Improvements
 
-- Deep Learning Models
-- Battery Life Forecasting
-- Cloud Database Integration
-- Mobile Application
-- Real-Time Sensor Data Support
+* Deep Learning Models
+* Battery Life Forecasting
+* Cloud Database Integration
+* Mobile Application
+* Real-Time Sensor Data Support
 
 ---
 
