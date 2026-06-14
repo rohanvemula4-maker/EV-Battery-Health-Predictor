@@ -9,9 +9,19 @@ st.set_page_config(
     layout="wide"
 )
 
+# Debug Startup Message
+st.write("🚀 App Started")
+
 # Load Model
-with open("models/battery_model.pkl", "rb") as file:
-    model = pickle.load(file)
+try:
+    with open("models/battery_model.pkl", "rb") as file:
+        model = pickle.load(file)
+
+    st.success("✅ Model Loaded Successfully")
+
+except Exception as e:
+    st.error(f"❌ Model Loading Error: {e}")
+    st.stop()
 
 # Title
 st.title("🔋 EV Battery Health Predictor")
@@ -83,7 +93,6 @@ if st.button("🔋 Predict Battery Health"):
 
     prediction = model.predict(input_data)[0]
 
-    # Keep prediction between 0 and 100
     prediction = max(0, min(100, prediction))
 
     st.metric(
@@ -105,7 +114,6 @@ if st.button("🔋 Predict Battery Health"):
     else:
         st.error("❌ Battery Replacement Recommended")
 
-# Graph Section
 # Graph Section
 st.subheader("📊 Battery Analysis Graphs")
 
@@ -133,8 +141,8 @@ try:
             use_container_width=True
         )
 
-except:
-    st.info("Graphs not found.")
+except Exception as e:
+    st.warning(f"Graph Error: {e}")
 
 # Footer
 st.markdown("---")
